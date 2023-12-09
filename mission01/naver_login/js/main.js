@@ -1,12 +1,4 @@
-/*
-
-1. email 정규표현식을 사용한 validation
-2. pw 정규표현식을 사용한 validation
-3. 상태 변수 관리
-4. 로그인 버튼을 클릭시 조건처리
-
-*/
-
+// 함수 선언
 function emailReg(text) {
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -19,25 +11,21 @@ function pwReg(text) {
   return re.test(String(text).toLowerCase());
 }
 
-// 정규식 비교 후 class 제거 or 추가
-
-function checkEmailReg(node, input) {
-  if (emailReg(input) || input.length == 0) {
-    node.classList.remove("is--invalid");
-  } else {
-    node.classList.add("is--invalid");
+function checkReg(node, input) {
+  if (node.className.includes("email")) {
+    if (emailReg(input) || input.length == 0) {
+      node.classList.remove("is--invalid");
+    } else {
+      node.classList.add("is--invalid");
+    }
+  } else if (node.className.includes("password")) {
+    if (pwReg(input) || input.length == 0) {
+      node.classList.remove("is--invalid");
+    } else {
+      node.classList.add("is--invalid");
+    }
   }
 }
-
-function checkPasswordReg(node, input) {
-  if (pwReg(input) || input.length == 0) {
-    node.classList.remove("is--invalid");
-  } else {
-    node.classList.add("is--invalid");
-  }
-}
-
-// 아이디, 비밀번호 비교
 
 function checkEmail(user, input) {
   return user.id === input;
@@ -47,44 +35,47 @@ function checkPassword(user, input) {
   return user.pw === input;
 }
 
-// ---------------------------------------------------------------------------------------------------------
-// javascript 실행 부분 (정리 전)
+// ------------------------------------------------------------------
 
 const user = {
   id: "asd@naver.com",
   pw: "asd123@!",
 };
 
-const emailInput = document.getElementsByClassName("user-email-input")[0];
-const passwordInput = document.getElementsByClassName("user-password-input")[0];
-const loginButton = document.getElementsByClassName("btn-login")[0];
+const ERROR_MESSAGE = "아이디 혹은 비밀번호가 틀렸습니다.";
+const NEXT_PAGE = "welcome.html";
 
-console.log(emailInput);
+const nodeEmailInput = document.getElementsByClassName("user-email-input")[0];
+const nodePasswordInput = document.getElementsByClassName("user-password-input")[0];
+const nodeLoginButton = document.getElementsByClassName("btn-login")[0];
 
 let emailValue = "";
 let passwordValue = "";
 
-emailInput.addEventListener("input", function (text) {
-  checkEmailReg(emailInput, text.target.value);
+// Email Input Tag Event
+nodeEmailInput.addEventListener("input", function (text) {
+  checkReg(nodeEmailInput, text.target.value);
 });
 
-emailInput.addEventListener("change", function (text) {
+nodeEmailInput.addEventListener("change", function (text) {
   emailValue = text.target.value;
 });
 
-passwordInput.addEventListener("input", (text) =>
-  checkPasswordReg(passwordInput, text.target.value)
-);
+// Password Input Tag Event
+nodePasswordInput.addEventListener("input", function (text) {
+  checkReg(nodePasswordInput, text.target.value);
+});
 
-passwordInput.addEventListener("change", function (text) {
+nodePasswordInput.addEventListener("change", function (text) {
   passwordValue = text.target.value;
 });
 
-loginButton.addEventListener("click", function (e) {
+// Button Tag Event 
+nodeLoginButton.addEventListener("click", function (e) {
   e.preventDefault();
   if (checkEmail(user, emailValue) && checkPassword(user, passwordValue)) {
-    window.location.href = "welcome.html";
+    window.location.href = NEXT_PAGE;
   } else {
-    console.log("비밀번호가 틀렸습니다.");
+    alert(ERROR_MESSAGE);
   }
 });
