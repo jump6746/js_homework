@@ -28,19 +28,24 @@ function checkReg(node, input) {
 }
 
 function checkEmail(user, input) {
-  return user.id === input;
+  return user.id === visitor.id;
 }
 
 function checkPassword(user, input) {
-  return user.pw === input;
+  return user.pw === visitor.pw;
 }
 
 // ------------------------------------------------------------------
 
 const user = {
   id: "asd@naver.com",
-  pw: "asd123@!",
+  pw: "spdlqj123!@",
 };
+
+const visitor = {
+  id: "",
+  pw: "",
+}
 
 const ERROR_MESSAGE = "아이디 혹은 비밀번호가 틀렸습니다.";
 const NEXT_PAGE = "welcome.html";
@@ -49,8 +54,6 @@ const nodeEmailInput = document.getElementsByClassName("user-email-input")[0];
 const nodePasswordInput = document.getElementsByClassName("user-password-input")[0];
 const nodeLoginButton = document.getElementsByClassName("btn-login")[0];
 
-let emailValue = "";
-let passwordValue = "";
 
 // Email Input Tag Event
 nodeEmailInput.addEventListener("input", function (text) {
@@ -58,7 +61,7 @@ nodeEmailInput.addEventListener("input", function (text) {
 });
 
 nodeEmailInput.addEventListener("change", function (text) {
-  emailValue = text.target.value;
+  visitor.id = text.target.value;
 });
 
 // Password Input Tag Event
@@ -67,13 +70,13 @@ nodePasswordInput.addEventListener("input", function (text) {
 });
 
 nodePasswordInput.addEventListener("change", function (text) {
-  passwordValue = text.target.value;
+  visitor.pw = text.target.value;
 });
 
 // Button Tag Event 
 nodeLoginButton.addEventListener("click", function (e) {
   e.preventDefault();
-  if (checkEmail(user, emailValue) && checkPassword(user, passwordValue)) {
+  if (checkEmail(user, visitor) && checkPassword(user, visitor)) {
     window.location.href = NEXT_PAGE;
   } else {
     alert(ERROR_MESSAGE);
