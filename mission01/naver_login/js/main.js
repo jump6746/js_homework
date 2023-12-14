@@ -55,6 +55,7 @@ function handlePasswordInputValue(e) {
 
 function handleLoginButton(e) {
   e.preventDefault();
+
   if (emailRegCheck && pwRegCheck) {
     if (checkEmail(user, visitor) && checkPassword(user, visitor)) {
       window.location.href = NEXT_PAGE;
